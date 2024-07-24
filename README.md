@@ -1,51 +1,52 @@
 # llm4mat-tutorial
 
-## 環境構築
+## Environment Setup
 
-### Dockerの場合（ローカル）
+### Docker build
 ```bash
 docker build -t mi_llm:v0.3 ./docker/
 ```
 
-## 実験実行
-### Dockerの起動
+## Running Experiments
+### Docker startup
 ```bash
 mkdir hf_cache # for hugging face model cache dir
 docker run --rm --gpus all -it --shm-size=200g -v $PWD:/workspace -v hf_cache:/root/.cache/huggingface/ mi_llm:v0.3 bash
 ```
 
-### Materials Project（MP）データセット準備
-- Materials Projectからデータをダウンロードする
-- MPからAPI keyを取得し、`api_keys/MP_API_KEY.txt` に保存
-    - API key生成は https://next-gen.materialsproject.org/api を参照
+### Preparing the Materials Project (MP) Dataset
+- Download data from the Materials Project
+- Obtain an API key from MP and save it in `api_keys/MP_API_KEY.txt`
+    - Refer to https://next-gen.materialsproject.org/api to generate an API key
 
-- 以下のスクリプトを実行すると、`mp_download/20240718_0000.pkl` のように連番のpklファイルができる
+- Running the following script will create sequentially numbered pkl files like`mp_download/20240718_0000.pkl`
 ```bash
 python download_mp_data.py
 ```
-- これでデータ準備は完了
+- dataset preparation completed
 
 
-### LLMのファインチューニング
-- Hugging Faceのtokenを生成し、`api_keys/hf_token.txt` に配置
-    - tokenは https://huggingface.co/settings/tokens からダウンロードできる
+### Fine-tuning LLMs
+- Generate a token from Hugging Face and place it in `api_keys/hf_token.txt`
+    - The token can be obtained from https://huggingface.co/settings/tokens
 
-- 結晶構造から物性値（bandgap他）を予測する例：
+- Example of predicting physical properties (bandgap, etc.) from crystal structure:
 ```bash
 python train_structure2property.py
 ```
 
-### 分析用にJupyterLabを起動する場合
+### Start JupyterLab for analysis
 
 ```bash
 jupyter lab --allow-root --ip=0.0.0.0
 ```
 
-## モデルの推論
-- バンドギャップ予測用にファインチューニングしたモデル：
+## Model Inference
+- fine-tuned model for bandgap prediction:
     - `https://huggingface.co/ysuz/Mistral-Nemo-Base-2407-bandgap`
+    - The result of `train_structure2property.py`
+- Usage
 
-- 使い方
 ```python
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
