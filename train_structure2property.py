@@ -2,9 +2,12 @@ import os
 # os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
 
 # set hugging face token to access gated model
-with open('api_keys/hf_token.txt', mode="r") as f:
+with open('/workspace/api_keys/hf_token.txt', mode="r") as f:
     os.environ["HF_TOKEN"] = f.read()
     os.environ["HUGGING_FACE_HUB_TOKEN"] = f.read()
+
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 import glob
 import pickle
