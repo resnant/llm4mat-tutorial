@@ -161,8 +161,9 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-api_keys/
+api_keys/*
 notebooks/*
 outputs/*
 mp_download/*
 !notebooks/run_inference_and_eval.ipynb
+!api_keys/your_api_keys_goes_here
