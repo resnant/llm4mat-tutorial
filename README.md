@@ -40,3 +40,56 @@ python train_structure2property.py
 ```bash
 jupyter lab --allow-root --ip=0.0.0.0
 ```
+
+## モデルの推論
+- バンドギャップ予測用にファインチューニングしたモデル：
+    - `https://huggingface.co/ysuz/Mistral-Nemo-Base-2407-bandgap`
+
+- 使い方
+```python
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+
+model_id = "ysuz/Mistral-Nemo-Base-2407-bandgap"
+
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model = AutoModelForCausalLM.from_pretrained(model_id,
+                                             device_map="auto",
+                                             torch_dtype=torch.float16,
+                                            )
+
+# example of input context
+structure_text = """
+Reduced Formula: BaSrI4
+abc   :   5.807091   5.807091   8.251028
+angles:  90.000000  90.000000  90.000000
+pbc   :       True       True       True
+space group: ('P4/mmm', 123)
+Sites (6)
+  #  SP      a    b         c    magmom
+  0  Ba    0.5  0.5  0               -0
+  1  Sr    0    0    0.5             -0
+  2  I     0    0.5  0.257945         0
+  3  I     0.5  0    0.257945         0
+  4  I     0    0.5  0.742055         0
+  5  I     0.5  0    0.742055         0
+
+Output:
+"""
+
+prompt = f"Instruction: What is the bandgap value of following material?:\n{structure_text}\n\nOutput:\n"
+inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+
+with torch.no_grad():
+    tokens = model.generate(
+        **inputs,
+        max_new_tokens=256,
+        do_sample=True,
+        temperature=0.5,
+        top_p=0.9,
+        repetition_penalty=1.05,
+    )
+generated_text = tokenizer.decode(tokens[0], skip_special_tokens=True)
+print(f"Generated raw text:\n{generated_text}\n\n")
+```
