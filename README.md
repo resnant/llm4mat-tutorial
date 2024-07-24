@@ -43,7 +43,7 @@ jupyter lab --allow-root --ip=0.0.0.0
 
 ## Model Inference
 - fine-tuned model for bandgap prediction:
-    - `https://huggingface.co/ysuz/Mistral-Nemo-Base-2407-bandgap`
+    - https://huggingface.co/ysuz/Mistral-Nemo-Base-2407-bandgap
     - The result of `train_structure2property.py`
 - Usage
 
