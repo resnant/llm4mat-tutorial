@@ -165,3 +165,4 @@ api_keys/
 notebooks/*
 outputs/*
 mp_download/*
+!notebooks/run_inference_and_eval.ipynb
