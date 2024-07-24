@@ -166,4 +166,5 @@ notebooks/*
 outputs/*
 mp_download/*
 !notebooks/run_inference_and_eval.ipynb
+!notebooks/paper_keyword_generation.ipynb
 !api_keys/your_api_keys_goes_here
