@@ -45,8 +45,9 @@ jupyter lab --allow-root --ip=0.0.0.0
 - fine-tuned model for bandgap prediction:
     - https://huggingface.co/ysuz/Mistral-Nemo-Base-2407-bandgap
     - The result of `train_structure2property.py`
-- Usage
+- Please refer example:[notebooks/run_inference_and_eval.ipynb](https://github.com/resnant/llm4mat-tutorial/blob/main/notebooks/run_inference_and_eval.ipynb)
 
+- Minimum code:
 ```python
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
