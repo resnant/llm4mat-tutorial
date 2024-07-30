@@ -1,45 +1,19 @@
 # llm4mat-tutorial
 
-## Environment Setup
+このリポジトリは[DxMT AIMHack 2024](https://dxmt.mext.go.jp/news/1105) での講演資料・ハンズオン用コードです。  
 
-### Docker build
-```bash
-docker build -t mi_llm:v0.3 ./docker/
-```
+この講演では、LLM（大規模言語モデル）の基礎と材料科学における応用例について、ハンズオン形式で学ぶことを目的としています。
+これらの資料が、LLMを使うための現代的なソフトウェアスタックへの入門と、材料科学におけるLLMの可能性を探るための助けとなれば幸いです。
 
-## Running Experiments
-### Docker startup
-```bash
-mkdir hf_cache # for hugging face model cache dir
-docker run --rm --gpus all -it --shm-size=200g -v $PWD:/workspace -v hf_cache:/root/.cache/huggingface/ mi_llm:v0.3 bash
-```
-
-### Preparing the Materials Project (MP) Dataset
-- Download data from the Materials Project
-- Obtain an API key from MP and save it in `api_keys/MP_API_KEY.txt`
-    - Refer to https://next-gen.materialsproject.org/api to generate an API key
-
-- Running the following script will create sequentially numbered pkl files like`mp_download/20240718_0000.pkl`
-```bash
-python download_mp_data.py
-```
-- dataset preparation completed
-
-
-### Fine-tuning LLMs
-- Generate a token from Hugging Face and place it in `api_keys/hf_token.txt`
-    - The token can be obtained from https://huggingface.co/settings/tokens
-
-- Example of predicting physical properties (bandgap, etc.) from crystal structure:
-```bash
-python train_structure2property.py
-```
-
-### Start JupyterLab for analysis
-
-```bash
-jupyter lab --allow-root --ip=0.0.0.0
-```
+## コードの概要
+- [notebooks/paper_keyword_generation.ipynb](notebooks/paper_keyword_generation.ipynb)
+    - Gemini (Google製LLM)を使って論文タイトルや要旨からキーワードを生成する例
+- [notebooks/run_inference_and_eval.ipynb](notebooks/run_inference_and_eval.ipynb)
+    - 結晶構造からバンドギャップを予測するためにファインチューニングしたLLMを動かして推論と評価を行う例
+- [download_mp_data.py](download_mp_data.py)
+    - Materials Project（MP）から学習用データをダウンロードするコード
+- [train_structure2property.py](train_structure2property.py)
+    - MPのデータでLLMをファインチューニングするためのコード
 
 ## Model Inference
 - fine-tuned model for bandgap prediction:
@@ -94,4 +68,46 @@ with torch.no_grad():
     )
 generated_text = tokenizer.decode(tokens[0], skip_special_tokens=True)
 print(f"Generated raw text:\n{generated_text}\n\n")
+```
+
+
+## Environment Setup
+
+### Docker build
+```bash
+docker build -t mi_llm:v0.3 ./docker/
+```
+
+## Running Experiments
+### Docker startup
+```bash
+mkdir hf_cache # for hugging face model cache dir
+docker run --rm --gpus all -it --shm-size=200g -v $PWD:/workspace -v hf_cache:/root/.cache/huggingface/ mi_llm:v0.3 bash
+```
+
+### Preparing the Materials Project (MP) Dataset
+- Download data from the Materials Project
+- Obtain an API key from MP and save it in `api_keys/MP_API_KEY.txt`
+    - Refer to https://next-gen.materialsproject.org/api to generate an API key
+
+- Running the following script will create sequentially numbered pkl files like`mp_download/20240718_0000.pkl`
+```bash
+python download_mp_data.py
+```
+- dataset preparation completed
+
+
+### Fine-tuning LLMs
+- Generate a token from Hugging Face and place it in `api_keys/hf_token.txt`
+    - The token can be obtained from https://huggingface.co/settings/tokens
+
+- Example of predicting physical properties (bandgap, etc.) from crystal structure:
+```bash
+python train_structure2property.py
+```
+
+### Start JupyterLab for analysis
+
+```bash
+jupyter lab --allow-root --ip=0.0.0.0
 ```
