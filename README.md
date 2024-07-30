@@ -5,7 +5,9 @@
 この講演では、LLM（大規模言語モデル）の基礎と材料科学における応用例について、ハンズオン形式で学ぶことを目的としています。
 これらの資料が、LLMを使うための現代的なソフトウェアスタックへの入門と、材料科学におけるLLMの可能性を探るための助けとなれば幸いです。
 
-## コードの概要
+## リポジトリの概要
+- [lecture_slide/DxMT20240725_LLM.pdf](lecture_slide/DxMT20240725_LLM.pdf)
+    - 講義スライド
 - [notebooks/paper_keyword_generation.ipynb](notebooks/paper_keyword_generation.ipynb)
     - Gemini (Google製LLM)を使って論文タイトルや要旨からキーワードを生成する例
 - [notebooks/run_inference_and_eval.ipynb](notebooks/run_inference_and_eval.ipynb)
